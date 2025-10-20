@@ -1,0 +1,114 @@
+{% extends 'Advocate/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Case</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f9;
+    }
+
+    .case-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    .case-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .case-search-table,
+    .case-details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .case-search-table td,
+    .case-details-table td,
+    .case-details-table th {
+        padding: 12px;
+        border: 1px solid #ddd;
+    }
+
+    .case-details-table th {
+        background-color: #000;
+        color: #fff;
+        text-align: left;
+    }
+
+    .send-request-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #000;
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s;
+    }
+
+    .send-request-btn:hover {
+        background-color: #333;
+    }
+
+    .centered {
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+<div class="case-container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <table class="case-search-table">
+            <tr>
+                <td>Case Number</td>
+                <td><input type="text" name="txt_casenum" id="txt_casenum" required></td>
+                <td><input type="submit" value="Search"></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if case %}
+    <h2>Case Details</h2>
+    <table class="case-details-table">
+        <tr>
+            <th>Case Number</th>
+            <td>{{ case.case_number }}</td>
+        </tr>
+        <tr>
+            <th>Case Content</th>
+            <td>{{ case.case_content }}</td>
+        </tr>
+        <tr>
+            <th>Case Type</th>
+            <td>{{ case.type.type_name }}</td>
+        </tr>
+        <tr>
+            <th>Case Date</th>
+            <td>{{ case.case_datetime }}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="centered">
+                <a href="{% url 'Advocate:sendrequest' case.id %}" class="send-request-btn">Send Request</a>
+            </td>
+        </tr>
+    </table>
+    {% endif %}
+</div>
+</body>
+</html>
+{% endblock %}

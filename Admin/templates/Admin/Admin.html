@@ -1,0 +1,94 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Manage Admins</h2>
+
+    <!-- Admin Form -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="txt_name" class="form-label">Name</label>
+                            <input type="text" class="form-control" name="txt_name" id="txt_name" required
+                                   value="{{editdata.admin_name}}"
+                                   pattern="^[A-Z]+[a-zA-Z ]*$"
+                                   title="Name allows only alphabets, spaces, and first letter must be capital">
+                        </div>
+                        <div class="mb-3">
+                            <label for="txt_email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="txt_email" id="txt_email" required
+                                   value="{{editdata.admin_email}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="txt_password" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="txt_password" id="txt_password" required
+                                   value="{{editdata.admin_password}}"
+                                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                   title="Must contain at least one number, one uppercase, one lowercase letter, and at least 8 characters">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa fa-check-circle me-1"></i> Submit
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fa fa-eraser me-1"></i> Clear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin List Table -->
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>SL No</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in data %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{i.admin_name}}</td>
+                                <td>{{i.admin_email}}</td>
+                                <td>{{i.admin_password}}</td>
+                                <td>
+                                    <a href="{% url 'Admin:editadmin' i.id %}" class="btn btn-primary btn-sm me-1">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'Admin:deladmin' i.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete this admin?');">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Admin' %}";
+</script>
+{% endif %}
+
+{% endblock %}

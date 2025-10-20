@@ -1,0 +1,166 @@
+{% extends 'PoliceStation/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Police Station Profile</title>
+<style>
+    body {
+        font-family: 'Work Sans', Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .containers {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 600;
+        color: #000;
+        margin-bottom: 20px;
+    }
+
+    form table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 15px;
+    }
+
+    td {
+        padding: 10px;
+        font-size: 15px;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="file"],
+    select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-size: 15px;
+        transition: border 0.3s;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: #000;
+        outline: none;
+    }
+
+    input[type="submit"] {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 15px;
+        transition: background 0.3s;
+        display: block;
+        margin: 20px auto 0;
+    }
+
+    input[type="submit"]:hover {
+        background: #333;
+    }
+</style>
+</head>
+<body>
+<div class="containers">
+    <h2>Edit Profile</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Police Name</td>
+                <td>
+                    <input type="text" name="txt_plcname" value="{{policedata.policestation_name}}" 
+                           pattern="^[A-Z]+[a-zA-Z ]*$" 
+                           title="Name allows only alphabets, spaces, and first letter must be capital" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" name="txt_email" value="{{policedata.policestation_email}}" required></td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>
+                    <input type="text" name="txt_contact" value="{{policedata.policestation_contact}}" 
+                           pattern="[7-9]{1}[0-9]{9}" 
+                           title="Phone number should start with 7-9 and have 10 digits" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><input type="text" name="txt_address" value="{{policedata.policestation_address}}" required></td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="txt_photo"></td>
+            </tr>
+            <tr>
+                <td>Proof</td>
+                <td><input type="file" name="txt_proof"></td>
+            </tr>
+            <tr>
+                <td>District</td>
+                <td>
+                    <select name="seldistrict" id="sel_district" required>
+                        <option value="">Select District</option>
+                        {% for i in dis %}
+                        <option value="{{ i.id }}" {% if policedata.place.district.id == i.id %}selected{% endif %}>{{ i.district_name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td>
+                    <select name="sel_place" id="select_place" required>
+                        <option value="{{ policedata.place.id }}">{{ policedata.place.place_name }}</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Update Profile">
+    </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_district").change(function () {
+        var disid = $(this).val();
+        var ur = "{% url 'Guest:Ajaxplace' %}";
+        $.ajax({
+            url: ur,
+            data: { disid: disid },
+            success: function (data) {
+                $("#select_place").html(data);
+            },
+        });
+    });
+</script>
+
+{% if msg %}
+<script>
+    alert("{{ msg }}");
+    window.location = "{% url 'PoliceStation:myprofile' %}";
+</script>
+{% endif %}
+</body>
+</html>
+{% endblock %}

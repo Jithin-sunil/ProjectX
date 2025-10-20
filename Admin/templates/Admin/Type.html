@@ -1,0 +1,76 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Manage Types</h2>
+
+    <!-- Add/Edit Type Form -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="txt_type" class="form-label">Type Name</label>
+                            <input type="text" class="form-control" name="txt_type" id="txt_type" value="{{editdata.type_name}}" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa fa-check-circle me-1"></i> Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Display Types Table -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped text-center align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>SL No</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in type %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{i.type_name}}</td>
+                                <td>
+                                    <a href="{% url 'Admin:edittype' i.id %}" class="btn btn-primary btn-sm me-1">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'Admin:deletetype' i.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete this type?');">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3">No types added yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:type' %}";
+</script>
+{% endif %}
+
+{% endblock %}

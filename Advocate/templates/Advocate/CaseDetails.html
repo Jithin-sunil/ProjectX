@@ -1,0 +1,103 @@
+{% extends 'Advocate/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Details</title>
+<style>
+    body {
+        font-family: 'Work Sans', Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .adv-case-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+
+    .adv-case-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 25px;
+        color: #000;
+    }
+
+    .adv-case-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+        font-size: 15px;
+    }
+
+    .adv-case-table th,
+    .adv-case-table td {
+        padding: 12px 15px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .adv-case-table th {
+        width: 35%;
+        font-weight: 600;
+        color: #555;
+        background: #f9f9f9;
+        border-radius: 6px 0 0 6px;
+    }
+
+    .adv-case-table td {
+        background: #f5f5f5;
+        border-radius: 0 6px 6px 0;
+        color: #333;
+    }
+
+    .adv-case-table a {
+        color: #000;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .adv-case-table a:hover {
+        color: #555;
+    }
+</style>
+</head>
+<body>
+<div class="adv-case-container">
+    <h2 class="adv-case-title">Case Details</h2>
+    <table class="adv-case-table">
+        <tr>
+            <th>Case Number</th>
+            <td>{{ case.case_number }}</td>
+        </tr>
+        <tr>
+            <th>Case Content</th>
+            <td>{{ case.case_content }}</td>
+        </tr>
+        <tr>
+            <th>Case Section</th>
+            <td>{{ case.case_section }}</td>
+        </tr>
+        <tr>
+            <th>Case Type</th>
+            <td>{{ case.type.type_name }}</td>
+        </tr>
+        <tr>
+            <th>Case File</th>
+            <td><a href="{{ case.case_file.url }}" target="_blank">View File</a></td>
+        </tr>
+        <tr>
+            <th>Case Date</th>
+            <td>{{ case.case_datetime }}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Password</title>
+    <style>
+        /* Unique class names for Change Password page */
+        .changepwd-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            font-family: 'Work Sans', sans-serif;
+        }
+        .changepwd-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .changepwd-form {
+            width: 100%;
+        }
+        .changepwd-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        .changepwd-table tr {
+            display: block;
+            margin-bottom: 10px;
+            background: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .changepwd-table td {
+            display: block;
+            padding: 12px 15px;
+            text-align: left;
+            border: none;
+        }
+        .changepwd-label {
+            font-weight: 500;
+            color: #555;
+            font-size: 15px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .changepwd-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+        .changepwd-input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .changepwd-submit-container {
+            text-align: center;
+            padding-top: 20px;
+        }
+        .changepwd-submit {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: background 0.3s;
+        }
+        .changepwd-submit:hover {
+            background: #333;
+        }
+        .changepwd-error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="changepwd-container">
+        <div class="changepwd-title">Change Password</div>
+        <form action="" method="post" class="changepwd-form">
+            {% csrf_token %}
+            <table class="changepwd-table">
+                <tr>
+                    <td>
+                        <label for="id_oldpwd" class="changepwd-label">Current Password</label>
+                        <input
+                            type="password"
+                            class="changepwd-input"
+                            id="id_oldpwd"
+                            name="txt_oldpwd"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"
+                            required
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="id_newpwd" class="changepwd-label">New Password</label>
+                        <input
+                            type="password"
+                            class="changepwd-input"
+                            id="id_newpwd"
+                            name="txt_newpwd"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"
+                            required
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="id_confirmpwd" class="changepwd-label">Confirm Password</label>
+                        <input
+                            type="password"
+                            class="changepwd-input"
+                            id="id_confirmpwd"
+                            name="txt_confirmpwd"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                            title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"
+                            required
+                        >
+                    </td>
+                </tr>
+                <tr>
+                    <td class="changepwd-submit-container">
+                        <input type="submit" value="Change Password" class="changepwd-submit">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    {% if msg %}
+    <script>
+        alert("{{ msg }}");
+        window.location = "{% url 'User:myprofile' %}";
+    </script>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

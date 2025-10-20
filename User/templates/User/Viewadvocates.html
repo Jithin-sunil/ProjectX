@@ -1,0 +1,129 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Advocates</title>
+    <style>
+        /* Consistent modern theme */
+        body {
+            font-family: 'Work Sans', Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .advocates-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .adv-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .adv-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .adv-photo {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .adv-details {
+            padding: 15px 18px;
+        }
+
+        .adv-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .adv-info {
+            font-size: 14px;
+            color: #555;
+            margin: 3px 0;
+        }
+
+        .adv-info span {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .adv-action {
+            text-align: center;
+            margin: 15px 0 20px 0;
+        }
+
+        .adv-btn {
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .adv-btn:hover {
+            background: #333;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #222;
+            margin-top: 25px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2 class="page-title">View Advocates</h2>
+
+    <div class="advocates-container">
+        {% for i in adv %}
+        <div class="adv-card">
+            <img src="{{ i.advocate_photo.url }}" alt="Advocate Photo" class="adv-photo">
+            <div class="adv-details">
+                <div class="adv-name">{{ i.advocate_name }}</div>
+                <div class="adv-info"><span>Email:</span> {{ i.advocate_email }}</div>
+                <div class="adv-info"><span>Contact:</span> {{ i.advocate_contact }}</div>
+                <div class="adv-info"><span>Address:</span> {{ i.advocate_address }}</div>
+                <div class="adv-info"><span>District:</span> {{ i.place.district.district_name }}</div>
+                <div class="adv-info"><span>Place:</span> {{ i.place.place_name }}</div>
+            </div>
+            <div class="adv-action">
+                <a href="{% url 'User:booking' i.id %}" class="adv-btn">Book</a>
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align:center; color:#666; font-size:16px;">No advocates available.</p>
+        {% endfor %}
+    </div>
+
+    {% if msg %}
+    <script>
+        alert("{{ msg }}");   
+        window.location = "{% url 'User:viewadvocates' %}";
+    </script>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Booking</title>
+    <style>
+        /* Modern styling for View Booking page */
+        .booking-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 25px;
+            font-family: 'Work Sans', Arial, sans-serif;
+        }
+
+        .booking-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .booking-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .booking-table th {
+            background: #000;
+            color: #fff;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .booking-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .booking-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .booking-table tr:hover {
+            background: #f1f1f1;
+        }
+
+        .booking-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .booking-status {
+            font-weight: 500;
+        }
+
+        .booking-pending {
+            color: #ff9800;
+        }
+
+        .booking-accepted {
+            color: #4caf50;
+        }
+
+        .booking-rejected {
+            color: #f44336;
+        }
+
+        .booking-uploaded {
+            color: #2196f3;
+        }
+
+        .booking-action a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 5px;
+            font-weight: 500;
+        }
+
+        .booking-action a:hover {
+            text-decoration: underline;
+        }
+
+        .booking-empty {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <h3 class="booking-title">My Booking</h3>
+        <table class="booking-table">
+            <thead>
+                <tr>
+                    <th>SL NO</th>
+                    <th>Booking Date</th>
+                    <th>Advocate Name</th>
+                    <th>Photo</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in bookdata %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.booking_date }}</td>
+                    <td>{{ i.advocate.advocate_name }}</td>
+                    <td>
+                        {% if i.advocate.advocate_photo %}
+                            <img src="{{ i.advocate.advocate_photo.url }}" alt="Advocate Photo" class="booking-photo">
+                        {% else %}
+                            No Photo
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="booking-status
+                            {% if i.booking_status == 0 %} booking-pending
+                            {% elif i.booking_status == 1 %} booking-accepted
+                            {% elif i.booking_status == 3 %} booking-uploaded
+                            {% elif i.booking_status == 2 %} booking-rejected
+                            {% endif %}">
+                            {% if i.booking_status == 0 %}
+                                Pending
+                            {% elif i.booking_status == 1 %}
+                                Accepted
+                            {% elif i.booking_status == 3 %}
+                                Documents Uploaded
+                            {% elif i.booking_status == 2 %}
+                                Rejected
+                            {% endif %}
+                        </span>
+                        <div class="booking-action">
+                            {% if i.booking_status == 1 %}
+                                <a href="{% url 'User:chatpage' i.advocate.id %}">Chat</a> |
+                                <a href="{% url 'User:uploaddocs' i.id %}">Upload Documents</a>
+                            {% elif i.booking_status == 3 %}
+                                <a href="{% url 'User:chatpage' i.advocate.id %}">Chat</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="booking-empty">No bookings found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock %}

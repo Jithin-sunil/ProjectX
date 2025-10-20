@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdvocateRegitration</title>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table border="1" align="center">
+        
+        <tr>
+            <td>Name</td>
+            <td><input type="text" required name="txt_advname" id="" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input type="email" required name="txt_email" id=""></td>
+        </tr>
+        <tr>
+            <td>Contact</td>
+            <td><input type="text" required name="txt_contact" id="" pattern="[7-9]{1}[0-9]{9}" 
+                title="Phone number with 7-9 and remaing 9 digit with 0-9"></td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td><input type="text" name="txt_address" id=""></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" required name="txt_password" id="" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required name="txt_pass"></td>
+        </tr>
+        <tr>
+            <td>Photo</td>
+            <td><input type="file" required name="txt_photo" id=""></td>
+        </tr>
+        <tr>
+            <td>Proof</td>
+            <td><input type="file" requiredpy  name="txt_proof" id=""></td>
+        </tr>
+        <tr>
+            <td>District</td>
+            <td><select name="seldistrict" required id="sel_district">
+            <option value="">---------select district--------</option>
+            {% for i in dis %}
+            <option value="{{i.id}}">{{i.district_name}}</option>
+            {% endfor %}
+            </select></td>
+        </tr>
+        <tr>
+            <td>Place</td>
+            <td><select name="sel_place" required id="select_place"><
+            <option value="">-------select place------------</option>
+            /select></td>
+        </tr>
+        <tr>
+            <td  colspan="2" align="center"><input type="submit" value="Submit" ></td>
+            
+        </tr>
+    </table>
+
+</form>
+    
+</body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_district").change(function () {
+        var disid = $(this).val();
+        var ur = "{% url 'Guest:Ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { disid: disid, },
+            success: function (data) {
+                $("#select_place").html(data);
+            },
+        });
+    });
+    
+</script>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location="{% url 'Guest:advocatereg' %}"
+</script>
+{% endif %}

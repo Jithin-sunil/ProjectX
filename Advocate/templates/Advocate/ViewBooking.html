@@ -1,0 +1,120 @@
+{% extends 'Advocate/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking</title>
+<style>
+    body {
+        font-family: 'Work Sans', Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .booking-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+
+    .booking-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+    }
+
+    .booking-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .booking-table th, .booking-table td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    .booking-table th {
+        background: #000;
+        color: #fff;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .booking-action a {
+        display: inline-block;
+        margin: 2px 5px;
+        padding: 5px 12px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #000;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: background 0.3s;
+    }
+
+    .booking-action a:hover {
+        background-color: #333;
+    }
+
+    .status-accepted {
+        color: green;
+        font-weight: 600;
+    }
+
+    .status-rejected {
+        color: red;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        color: orange;
+        font-weight: 600;
+    }
+</style>
+</head>
+<body>
+<div class="booking-container">
+    <h2>Booking Requests</h2>
+    <table class="booking-table">
+        <tr>
+            <th>SL NO</th>
+            <th>User</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Booking Date</th>
+            <th>Action</th>
+        </tr>
+        {% for i in bookdata %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.user.user_contact}}</td>
+            <td>{{i.user.user_email}}</td>
+            <td>{{i.booking_date}}</td>
+            <td class="booking-action">
+                {% if i.booking_status == 0 %}
+                    <span class="status-pending">Pending</span><br>
+                    <a href="{% url 'Advocate:verifybooking' i.id 1 %}">Accept</a>
+                    <a href="{% url 'Advocate:verifybooking' i.id 2 %}">Reject</a>
+                {% elif i.booking_status == 1 %}
+                    <span class="status-accepted">Accepted</span><br>
+                    <a href="{% url 'Advocate:chatpage' i.user.id %}">Chat</a>
+                {% elif i.booking_status == 2 %}
+                    <span class="status-rejected">Rejected</span>
+                {% elif i.booking_status == 3 %}
+                    {{i.booking_content}}<br>
+                    <a href="{{i.booking_file.url }}">View Files</a><br>
+                    <a href="{% url 'Advocate:chatpage' i.user.id %}">Chat</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
+{% endblock %}

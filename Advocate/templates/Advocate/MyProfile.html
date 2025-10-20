@@ -1,0 +1,124 @@
+{% extends 'Advocate/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile</title>
+<style>
+    body {
+        font-family: 'Work Sans', Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .adv-profile-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        text-align: center;
+    }
+
+    .adv-profile-photo {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .adv-profile-table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+
+    .adv-profile-table td {
+        background: #f9f9f9;
+        padding: 12px 15px;
+        border-radius: 8px;
+    }
+
+    .adv-profile-label {
+        font-weight: 600;
+        color: #555;
+        width: 35%;
+    }
+
+    .adv-profile-value {
+        color: #333;
+        text-align: left;
+    }
+
+    .adv-profile-actions {
+        margin-top: 25px;
+    }
+
+    .adv-profile-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 0 10px;
+        background: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: background 0.3s;
+    }
+
+    .adv-profile-btn:hover {
+        background: #333;
+    }
+</style>
+</head>
+<body>
+<div class="adv-profile-container">
+    {% if advdata.advocate_photo %}
+        <img src="{{ advdata.advocate_photo.url }}" alt="Profile Photo" class="adv-profile-photo">
+    {% else %}
+        <div class="adv-profile-photo" style="background:#eee; display:flex; align-items:center; justify-content:center; color:#999;">
+            No Photo
+        </div>
+    {% endif %}
+
+    <table class="adv-profile-table">
+        <tr>
+            <td class="adv-profile-label">Name:</td>
+            <td class="adv-profile-value">{{ advdata.advocate_name }}</td>
+        </tr>
+        <tr>
+            <td class="adv-profile-label">Email:</td>
+            <td class="adv-profile-value">{{ advdata.advocate_email }}</td>
+        </tr>
+        <tr>
+            <td class="adv-profile-label">Contact:</td>
+            <td class="adv-profile-value">{{ advdata.advocate_contact }}</td>
+        </tr>
+        <tr>
+            <td class="adv-profile-label">Address:</td>
+            <td class="adv-profile-value">{{ advdata.advocate_address }}</td>
+        </tr>
+        <tr>
+            <td class="adv-profile-label">District:</td>
+            <td class="adv-profile-value">{{ advdata.place.district.district_name }}</td>
+        </tr>
+        <tr>
+            <td class="adv-profile-label">Place:</td>
+            <td class="adv-profile-value">{{ advdata.place.place_name }}</td>
+        </tr>
+    </table>
+
+    <div class="adv-profile-actions">
+        <a href="{% url 'Advocate:EditProfile' %}" class="adv-profile-btn">Edit Profile</a>
+        <a href="{% url 'Advocate:changepwd' %}" class="adv-profile-btn">Change Password</a>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

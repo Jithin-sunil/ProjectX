@@ -1,0 +1,136 @@
+{% extends 'PoliceStation/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Requests</title>
+<style>
+    body {
+        font-family: 'Work Sans', Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .containers {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 600;
+        color: #000;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background: #000;
+        color: #fff;
+        border-radius: 6px 6px 0 0;
+    }
+
+    tr:hover {
+        background: #f1f1f1;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+        font-weight: 500;
+        margin-right: 5px;
+    }
+
+    a:hover {
+        color: #555;
+    }
+
+    .status-accepted {
+        color: green;
+        font-weight: 500;
+    }
+
+    .status-rejected {
+        color: red;
+        font-weight: 500;
+    }
+
+    .status-bail {
+        color: blue;
+        font-weight: 500;
+    }
+
+    .status-unknown {
+        color: rgb(255,130,130);
+        font-weight: 500;
+    }
+
+</style>
+</head>
+<body>
+<div class="containers">
+    <h2>Case Requests</h2>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Case Details</th>
+            <th>Station Details</th>
+            <th>Request Details</th>
+            <th>Requested Date</th>
+            <th>Status</th>
+        </tr>
+        {% for i in request %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>
+                <strong>{{ i.case.case_number }}</strong><br>
+                {{ i.case.case_content }}
+            </td>
+            <td>
+                <strong>{{ i.case.policestation.policestation_name }}</strong><br>
+                {{ i.case.policestation.policestation_contact }}<br>
+                {{ i.case.policestation.policestation_email }}<br>
+                {{ i.case.policestation.policestation_address }}
+            </td>
+            <td>{{ i.request_casedesc }}</td>
+            <td>{{ i.request_date }}</td>
+            <td>
+                {% if i.request_status == 0 %}
+                    <a href="{% url 'PoliceStation:verifyrequest' i.id 1 %}" onclick="return confirm('Are You Sure To Share This Case Details?')">Accept</a>
+                    <a href="{% url 'PoliceStation:verifyrequest' i.id 2 %}">Reject</a>
+                {% elif i.request_status == 1 %}
+                    <span class="status-accepted">Request Accepted</span>
+                {% elif i.request_status == 2 %}
+                    <span class="status-rejected">Request Rejected</span>
+                {% elif i.request_status == 3 %}
+                    <a href="{{ i.request_bailfile.url }}">View Bail</a>
+                    <a href="{% url 'PoliceStation:verifyrequest' i.id 4 %}">Bail Granted</a>
+                {% elif i.request_status == 4 %}
+                    <span class="status-bail">Bail Granted</span>
+                {% else %}
+                    <span class="status-unknown">Unknown</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
+{% endblock %}

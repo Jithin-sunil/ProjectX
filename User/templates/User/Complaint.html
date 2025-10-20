@@ -1,0 +1,218 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint</title>
+    <style>
+        /* Modern styling for Complaint page */
+        body {
+            font-family: 'Work Sans', Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .complaint-section {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .complaint-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .complaint-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .complaint-form-group {
+            margin-bottom: 20px;
+        }
+
+        .complaint-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .complaint-input,
+        .complaint-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+
+        .complaint-input:focus,
+        .complaint-textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .complaint-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .complaint-submit {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            display: block;
+            margin: 20px auto 0;
+            transition: background 0.3s;
+        }
+
+        .complaint-submit:hover {
+            background: #333;
+        }
+
+        .complaint-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .complaint-table th {
+            background: #000;
+            color: #fff;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .complaint-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .complaint-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .complaint-table tr:hover {
+            background: #f1f1f1;
+        }
+
+        .complaint-action a {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .complaint-action a:hover {
+            text-decoration: underline;
+        }
+
+        .complaint-empty {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="complaint-section">
+        <!-- File a New Complaint -->
+        <div class="complaint-card">
+            <h3 class="complaint-title">File a New Complaint</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="complaint-form-group">
+                    <label for="txt_title" class="complaint-label">Title</label>
+                    <input
+                        type="text"
+                        id="txt_title"
+                        name="txt_title"
+                        class="complaint-input"
+                        required
+                    />
+                </div>
+                <div class="complaint-form-group">
+                    <label for="txt_content" class="complaint-label">Content</label>
+                    <textarea
+                        id="txt_content"
+                        name="txt_content"
+                        class="complaint-textarea"
+                        required
+                    ></textarea>
+                </div>
+                <button type="submit" class="complaint-submit">Submit Complaint</button>
+            </form>
+        </div>
+
+        <!-- My Complaints -->
+        <div class="complaint-card">
+            <h3 class="complaint-title">My Complaints</h3>
+            <table class="complaint-table">
+                <thead>
+                    <tr>
+                        <th>SI.NO</th>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Reply</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ complaint.complaint_date }}</td>
+                            <td>{{ complaint.complaint_title }}</td>
+                            <td>{{ complaint.complaint_content }}</td>
+                            <td>
+                                {% if complaint.complaint_reply %}
+                                    {{ complaint.complaint_reply }}
+                                {% else %}
+                                    No Reply Yet
+                                {% endif %}
+                            </td>
+                            <td class="complaint-action">
+                                <a href="{% url 'User:delete_complaint' complaint.id %}">Delete</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="complaint-empty">No complaints filed yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if msg %}
+    <script>
+        alert("{{ msg }}");
+        window.location = "{% url 'User:complaint' %}";
+    </script>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

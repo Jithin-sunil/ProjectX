@@ -1,0 +1,126 @@
+{% extends 'Advocate/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Requests</title>
+<style>
+    body {
+        font-family: 'Work Sans', Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .case-request-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+
+    .case-request-title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .case-request-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+
+    .case-request-table th, .case-request-table td {
+        padding: 12px 15px;
+        text-align: left;
+    }
+
+    .case-request-table th {
+        background-color: #000;
+        color: #fff;
+        border-radius: 6px;
+    }
+
+    .case-request-table tr {
+        background: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .case-status {
+        font-weight: 600;
+    }
+
+    .status-pending { color: orange; }
+    .status-accepted { color: green; }
+    .status-rejected { color: red; }
+    .status-bailsent { color: blue; }
+    .status-bailgranted { color: green; }
+
+    .case-action a {
+        display: inline-block;
+        margin-right: 10px;
+        text-decoration: none;
+        color: #000;
+        font-weight: 500;
+    }
+
+    .case-action a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+<div class="case-request-container">
+    <h2 class="case-request-title">Case Requests</h2>
+    <table class="case-request-table">
+        <tr>
+            <th>#</th>
+            <th>Case Number</th>
+            <th>Station Details</th>
+            <th>Request Details</th>
+            <th>Requested Date</th>
+            <th>Status</th>
+        </tr>
+        {% for i in request %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.case.case_number }}</td>
+            <td>
+                {{ i.case.policestation.policestation_name }} <br>
+                {{ i.case.policestation.policestation_contact }} <br>
+                {{ i.case.policestation.policestation_email }} <br>
+                {{ i.case.policestation.policestation_address }}
+            </td>
+            <td>{{ i.request_casedesc }}</td>
+            <td>{{ i.request_date }}</td>
+            <td class="case-status">
+                {% if i.request_status == 0 %}
+                    <span class="status-pending">Request Pending..</span>
+                {% elif i.request_status == 1 %}
+                    <span class="status-accepted">Request Accepted.</span>
+                    <div class="case-action">
+                        <a href="{% url 'Advocate:casedetails' i.case.id %}">View Details</a>
+                        <a href="{% url 'Advocate:sendbail' i.id %}">Send Bail</a>
+                    </div>
+                {% elif i.request_status == 2 %}
+                    <span class="status-rejected">Request Rejected</span>
+                {% elif i.request_status == 3 %}
+                    <span class="status-bailsent">Bail Sent</span>
+                {% elif i.request_status == 4 %}
+                    <span class="status-bailgranted">Bail Granted</span>
+                {% else %}
+                    <span style="color: rgb(255, 130, 130);">Unknown</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
+{% endblock %}

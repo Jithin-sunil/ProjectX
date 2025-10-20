@@ -1,0 +1,146 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        /* Modern styling for My Profile page */
+        .profile-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 25px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            font-family: 'Work Sans', Arial, sans-serif;
+        }
+
+        .profile-photo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .profile-table tr {
+            display: block;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-table td {
+            display: block;
+            padding: 12px 15px;
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 15px;
+        }
+
+        .profile-value {
+            color: #333;
+            font-size: 15px;
+        }
+
+        .profile-actions {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .profile-action-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .profile-action-btn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-photo-container">
+            {% if userdata.user_user_photo %}
+                <img src="{{ userdata.user_user_photo.url }}" alt="Profile Photo" class="profile-photo">
+            {% else %}
+                <div style="width: 150px; height: 150px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; margin: 0 auto; color: #999;">
+                    No Photo
+                </div>
+            {% endif %}
+        </div>
+
+        <table class="profile-table">
+            <tr>
+                <td>
+                    <span class="profile-label">Name:</span>
+                    <span class="profile-value">{{ userdata.user_name }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="profile-label">Email:</span>
+                    <span class="profile-value">{{ userdata.user_email }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="profile-label">Contact:</span>
+                    <span class="profile-value">{{ userdata.user_contact }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="profile-label">Address:</span>
+                    <span class="profile-value">{{ userdata.user_address }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="profile-label">District:</span>
+                    <span class="profile-value">{{ userdata.place.district.district_name }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="profile-label">Place:</span>
+                    <span class="profile-value">{{ userdata.place.place_name }}</span>
+                </td>
+            </tr>
+        </table>
+
+        <div class="profile-actions">
+            <a href="{% url 'User:EditProfile' %}" class="profile-action-btn">Edit Profile</a>
+            <a href="{% url 'User:changepwd' %}" class="profile-action-btn">Change Password</a>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

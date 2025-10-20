@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculation</title>
+</head>
+<body>
+  <form action="" method="post">
+  {% csrf_token %}
+  <table border="3">
+    <tr>
+      <td>number1</td>
+      <td><input type="text" name="FirstNumber" id=""></td>
+    </tr>
+    <tr>
+      <td>number2</td>
+      <td><input type="text" name="SecondNumber" id=""></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center"><input type="submit" name="button" value="add">
+      <input type="submit" name="button" value="sub">
+      <input type="submit" name="button" value="mult">
+      <input type="submit" name="button" value="divi"></td>
+     
+    </tr>
+    <tr>
+      <td>result</td>
+      <td>{{a}}{{b}}{{c}}{{d}}</td>
+    
+    </tr>
+  </table>
+</form>
+</body>
+</html>

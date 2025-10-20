@@ -1,0 +1,86 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+
+<div class="container my-5">
+
+    <!-- New Complaints -->
+    <div class="card mb-5 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">New Complaints</h4>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>SL No</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ complaint.user.user_name }}</td>
+                        <td>{{ complaint.user.user_email }}</td>
+                        <td>{{ complaint.complaint_title }}</td>
+                        <td>{{ complaint.complaint_content }}</td>
+                        <td>
+                            <a href="{% url 'Admin:replycomplaint' complaint.id %}" class="btn btn-primary btn-sm">
+                                <i class="fa fa-reply me-1"></i> Reply
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No complaints to display.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Replied Complaints -->
+    <div class="card mb-5 shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Replied Complaints</h4>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>SL No</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Reply</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in replied %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ complaint.user.user_name }}</td>
+                        <td>{{ complaint.user.user_email }}</td>
+                        <td>{{ complaint.complaint_title }}</td>
+                        <td>{{ complaint.complaint_content }}</td>
+                        <td>{{ complaint.complaint_reply }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No replied complaints to display.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

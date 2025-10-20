@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat View</title>
+    <style>
+        .file-card {
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    width: 250px;
+    text-decoration: none;
+    color: black;
+    transition: background 0.3s;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.file-card:hover {
+    background-color: #ebebeb;
+}
+
+.file-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background-color: #cfd8dc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.file-info {
+    flex-grow: 1;
+    min-width: 0;
+    font-size: 14px;
+    word-break: break-all;
+}
+
+.file-info span {
+    display: block;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.file-info small {
+    display: block;
+    color: #555;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+    </style>
+</head>
+<body>
+    {% for i in data %}
+        {% if i.advocate_from_id == tid %}
+            {% if i.chat_file != '' %}
+                <div class="par-r-mess">
+                    <div class="r-mess">
+                        <div class="con-width">
+                            {% with name=i.chat_file.name|lower %}
+                                {% if name|slice:"-4:" == ".png" or name|slice:"-4:" == ".jpg" or name|slice:"-5:" == ".jpeg" or name|slice:"-4:" == ".gif" or name|slice:"-5:" == ".webp" %}
+                                    <a href="{{i.chat_file.url}}" target="_blank">
+                                        <img src="{{i.chat_file.url}}" width="250px" height="250px" style="border-radius: 5%;" alt="">
+                                    </a>
+                                {% elif name|slice:"-4:" == ".mp4" or name|slice:"-5:" == ".webm" %}
+                                    <video controls width="250px" style="border-radius: 5%;">
+                                        <source src="{{ i.chat_file.url }}">
+                                    </video>
+                                {% elif name|slice:"-4:" == ".mp3" or name|slice:"-4:" == ".wav" %}
+                                    <audio controls style="width: 250px;">
+                                        <source src="{{ i.chat_file.url }}">
+                                    </audio>
+                                {% else %}
+                                    <a href="{{ i.chat_file.url }}" target="_blank" class="file-card">
+                                        <div class="file-icon">📄</div>
+                                        <div class="file-info">
+                                            <span>{{ i.chat_file.name }}</span>
+                                            <small>Click to view or download</small>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="r-time">
+                            {{i.chat_time|time}}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="par-r-mess">
+                    <div class="r-mess">
+                        <div class="con-width">{{i.chat_content}}</div>
+                        <div class="r-time">{{i.chat_time|time}}</div>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            {% if i.chat_file != '' %}
+                <div class="par-s-mess">
+                    <div class="s-mess">
+                        <div class="con-width">
+                            {% with name=i.chat_file.name|lower %}
+                                {% if name|slice:"-4:" == ".png" or name|slice:"-4:" == ".jpg" or name|slice:"-5:" == ".jpeg" or name|slice:"-4:" == ".gif" or name|slice:"-5:" == ".webp" %}
+                                    <a href="{{i.chat_file.url}}" target="_blank">
+                                        <img src="{{i.chat_file.url}}" width="250px" height="250px" style="border-radius: 5%;" alt="">
+                                    </a>
+                                {% elif name|slice:"-4:" == ".mp4" or name|slice:"-5:" == ".webm" %}
+                                    <video controls width="250px" style="border-radius: 5%;">
+                                        <source src="{{ i.chat_file.url }}">
+                                    </video>
+                                {% elif name|slice:"-4:" == ".mp3" or name|slice:"-4:" == ".wav" %}
+                                    <audio controls style="width: 250px;">
+                                        <source src="{{ i.chat_file.url }}">
+                                    </audio>
+                                {% else %}
+                                    <a href="{{ i.chat_file.url }}" target="_blank" class="file-card">
+                                        <div class="file-icon">📄</div>
+                                        <div class="file-info">
+                                            <span>{{ i.chat_file.name }}</span>
+                                            <small>Click to view or download</small>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="s-time">{{i.chat_time|time}}</div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="par-s-mess">
+                    <div class="s-mess">
+                        <div class="con-width">{{i.chat_content}}</div>
+                        <div class="s-time">{{i.chat_time|time}}</div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
+

@@ -1,0 +1,75 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Manage Districts</h2>
+
+    <!-- District Form -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="txt_DistrictName" class="form-label">District Name</label>
+                            <input type="text" class="form-control" name="txt_DistrictName" id="txt_DistrictName" required value="{{editdata.district_name}}">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa fa-check-circle me-1"></i> Submit
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fa fa-eraser me-1"></i> Clear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- District List Table -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>SL No</th>
+                                <th>District Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in dis %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{i.district_name}}</td>
+                                <td>
+                                    <a href="{% url 'Admin:editdistrict' i.id %}" class="btn btn-primary btn-sm me-1">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'Admin:deldistrict' i.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete this district?');">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:District' %}";
+</script>
+{% endif %}
+
+{% endblock %}

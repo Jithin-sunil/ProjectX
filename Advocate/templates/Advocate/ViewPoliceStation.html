@@ -1,0 +1,95 @@
+{% extends 'Advocate/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Police Stations</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        
+    }
+
+    .police-cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .police-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        width: 280px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .police-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .police-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .police-info {
+        margin-bottom: 10px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .police-info strong {
+        display: inline-block;
+        width: 100px;
+    }
+
+    .view-case-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-top: 10px;
+        transition: background 0.3s;
+    }
+
+    .view-case-btn:hover {
+        background-color: #333;
+    }
+</style>
+</head>
+<body>
+
+<div class="police-cards-container">
+    {% for i in policedata %}
+    <div class="police-card">
+        <img src="{{i.policestation_photo.url}}" alt="Photo" class="police-photo">
+        <div class="police-info"><strong>Name:</strong> {{i.policestation_name}}</div>
+        <div class="police-info"><strong>Email:</strong> {{i.policestation_email}}</div>
+        <div class="police-info"><strong>Contact:</strong> {{i.policestation_contact}}</div>
+        <div class="police-info"><strong>Address:</strong> {{i.policestation_address}}</div>
+        <div class="police-info"><strong>District:</strong> {{i.place.district.district_name}}</div>
+        <div class="police-info"><strong>Place:</strong> {{i.place.place_name}}</div>
+        <a href="{% url 'Advocate:viewcase' i.id %}" class="view-case-btn">View Case</a>
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
+{% endblock %}
