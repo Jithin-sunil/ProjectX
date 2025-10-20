@@ -12,6 +12,7 @@ def Login(request):
         password=request.POST.get('txt_password')
 
         usercount=tbl_user.objects.filter(user_email=email,user_password=password).count()
+        admincount=tbl_admin.objects.filter(admin_email=email,admin_password=password).count()
         policecount=tbl_policestation.objects.filter(policestation_email=email,policestation_password=password).count()
         advocatecount=tbl_advocate.objects.filter(advocate_email=email,advocate_password=password).count()
 
@@ -28,6 +29,10 @@ def Login(request):
             advocatedata=tbl_advocate.objects.get(advocate_email=email,advocate_password=password)
             request.session['advid']=advocatedata.id
             return redirect('Advocate:HomePage')      
+        elif admincount>0:
+            admindata=tbl_admin.objects.get(admin_email=email,admin_password=password)
+            request.session['aid']=admindata.id
+            return  redirect('Admin:Homepage')
         else:
             return render(request,'Guest/Login.html',{'msg':"Invalid Login"})
     else:

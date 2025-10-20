@@ -9,7 +9,7 @@ import string
 def HomePage(request):
     return render(request,'PoliceStation/HomePage.html')
 def Logout(request):
-    del request.session['uid']
+    del request.session['pid']
     return redirect("Guest:Login")
 def myprofile(request):
     policedata=tbl_policestation.objects.get(id=request.session['pid'])

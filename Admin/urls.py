@@ -3,6 +3,7 @@ from Admin import views
 app_name="Admin"
 
 urlpatterns = [
+      path('Logout/', views.Logout,name="Logout"),
       path('Homepage/', views.Homepage,name="Homepage"),
       path('Admin/', views.Admin,name="Admin"),
       path('deladmin/<int:did>/',views.deladmin,name="deladmin"),

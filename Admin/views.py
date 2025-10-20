@@ -2,12 +2,46 @@ from django.shortcuts import render,redirect
 from Admin.models import*
 from User.models import*
 from Guest.models import*
+from Advocate.models import*
+from PoliceStation.models import*
 
 #adminfeild
-# Create your views here.
+def Logout(request):
+    del request.session['aid']
+    return redirect('Guest:Login')
 
 def Homepage(request):
-    return render(request,'Admin/Homepage.html')
+    total_users = tbl_user.objects.count()
+    total_advocates = tbl_advocate.objects.count()
+    total_police = tbl_policestation.objects.count()
+    total_cases = tbl_request.objects.count()
+    total_bookings = tbl_booking.objects.count()
+    total_complaints = tbl_complaint.objects.count()
+
+   
+    recent_bookings = (
+        tbl_booking.objects.select_related('user', 'advocate')
+        .order_by('-id')[:5]
+    )
+    recent_complaints = (
+        tbl_complaint.objects.select_related('user')
+        .order_by('-id')[:5]
+    )
+    top_advocates = tbl_advocate.objects.all()[:4]
+
+    context = {
+        'total_users': total_users,
+        'total_advocates': total_advocates,
+        'total_police': total_police,
+        'total_cases': total_cases,
+        'total_bookings': total_bookings,
+        'total_complaints': total_complaints,
+        'recent_bookings': recent_bookings,
+        'recent_complaints': recent_complaints,
+        'top_advocates': top_advocates,
+    }
+
+    return render(request, 'Admin/Homepage.html', context)
     
 
 def Admin(request):
